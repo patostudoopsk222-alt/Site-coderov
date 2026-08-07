@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Black Russia — копии, моды и обучение</title>
+<meta name="description" content="Готовые копии сервера Black Russia, моды с обновлением и без, обучение и системы на заказ. Оплата — Telegram Stars.">
+<meta name="theme-color" content="#0A0C10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0C10;
+    --panel:#12151C;
+    --panel-2:#171B24;
+    --ember:#FF6A2B;
+    --cyan:#34D2FF;
+    --text:#E9EDF2;
+    --muted:#8B94A3;
+    --line:rgba(233,237,242,0.09);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation:none !important; transition:none !important;} }
+  body{
+    background:radial-gradient(ellipse at 50% -10%, #1a1420 0%, var(--bg) 55%);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+  h1,h2,h3{font-family:'Rajdhani', sans-serif; font-weight:700; letter-spacing:.01em; text-transform:uppercase;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ember);
+  }
+
+  header{position:sticky; top:0; z-index:50; background:rgba(10,12,16,0.85); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; max-width:1080px; margin:0 auto;}
+  .brand{font-family:'Rajdhani', sans-serif; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:.03em;}
+  .brand span{color:var(--ember);}
+  nav ul{list-style:none; display:flex; gap:24px;}
+  nav a{font-size:13px; color:var(--muted); transition:color .2s;}
+  nav a:hover, nav a:focus-visible{color:var(--text);}
+  .nav-cta{border:1px solid var(--ember); color:var(--ember); padding:8px 16px; border-radius:2px; font-size:13px; transition:.2s;}
+  .nav-cta:hover{background:var(--ember); color:#0A0C10;}
+
+  .hero{padding:70px 24px 20px; text-align:center;}
+  .hero .eyebrow{display:block; margin-bottom:18px;}
+  .hero h1{font-size:clamp(30px,7vw,54px); line-height:1.05; max-width:760px; margin:0 auto 14px;}
+  .hero h1 em{color:var(--ember); font-style:normal;}
+  .hero p{max-width:480px; margin:0 auto; color:var(--muted); font-size:15px;}
+
+  .selector{padding:56px 24px 40px;}
+  .section-head{max-width:600px; margin-bottom:30px;}
+  .section-head p{color:var(--muted); font-size:14px;}
+
+  .tabs{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;}
+  .tab{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    background:var(--panel); border:1px solid var(--line); color:var(--muted);
+    padding:10px 16px; border-radius:20px; cursor:pointer; transition:.2s;
+  }
+  .tab:hover{border-color:var(--ember); color:var(--text);}
+  .tab.active{background:var(--ember); border-color:var(--ember); color:#0A0C10; font-weight:600;}
+
+  /* CAROUSEL */
+  .carousel-shell{
+    position:relative; margin:44px auto 0; max-width:920px;
+    padding:40px 0 60px;
+  }
+  .carousel-stage{
+    position:relative; height:min(52vw, 380px); perspective:1400px;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:40px;
+  }
+  .carousel-track{position:relative; width:100%; height:100%;}
+  .slide{
+    position:absolute; left:50%; top:50%; width:min(62vw, 460px);
+    aspect-ratio:16/10; border-radius:12px;
+    transform-origin:center;
+    cursor:grab;
+  }
+  .slide:active{cursor:grabbing;}
+  .slide-img{width:100%; height:100%; object-fit:cover; display:block; border-radius:12px; pointer-events:none;}
+  .slide::after{
+    content:""; position:absolute; inset:0; border-radius:12px;
+    background:linear-gradient(130deg, rgba(255,106,43,.16), transparent 45%, rgba(52,210,255,.14));
+    mix-blend-mode:screen; pointer-events:none;
+  }
+  .reflection{
+    position:absolute; top:100%; left:0; width:100%; height:55%;
+    overflow:hidden; transform:scaleY(-1); border-radius:0 0 12px 12px;
+    -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.32), transparent 85%);
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,.32), transparent 85%);
+    pointer-events:none; opacity:.7;
+  }
+  .reflection img{width:100%; height:182%; object-fit:cover; display:block;}
+
+  .nav-arrow{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:10;
+    width:44px; height:44px; border-radius:50%; border:1px solid var(--line);
+    background:rgba(18,21,28,.85); backdrop-filter:blur(6px); color:var(--text);
+    font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:.2s;
+  }
+  .nav-arrow:hover{border-color:var(--ember); color:var(--ember);}
+  .nav-arrow.prev{left:0;}
+  .nav-arrow.next{right:0;}
+
+  .dots{display:flex; justify-content:center; gap:8px; margin-top:22px;}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--line); cursor:pointer; transition:.2s;}
+  .dot.active{background:var(--ember); width:20px; border-radius:4px;}
+
+  .lot-info{max-width:560px; margin:36px auto 0; text-align:center;}
+  .lot-info .lot-num{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted); letter-spacing:.1em;}
+  .lot-info h3{font-size:clamp(22px,3vw,30px); margin:10px 0 12px;}
+  .lot-info p.desc{color:var(--muted); font-size:14.5px; margin-bottom:22px;}
+  .price-row{display:flex; align-items:center; justify-content:center; gap:18px; margin-bottom:26px;}
+  .price{font-family:'Rajdhani', sans-serif; font-size:30px; font-weight:700; color:var(--ember);}
+  .status{font-family:'JetBrains Mono', monospace; font-size:11px; color:#3ddc84; border:1px solid #3ddc84; padding:4px 10px; border-radius:20px;}
+  .btn-primary{
+    display:inline-block; background:var(--ember); color:#0A0C10; font-weight:600;
+    padding:14px 26px; border-radius:4px; font-size:14px; transition:transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,106,43,.3);}
+
+  @media (max-width:640px){
+    .carousel-shell{padding:28px 0 8px;}
+    .nav-arrow{width:36px; height:36px; font-size:15px;}
+  }
+
+  .process{padding:100px 24px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:60px;}
+  .steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:32px; margin-top:20px;}
+  .step .num{font-family:'Rajdhani', sans-serif; font-size:32px; font-weight:700; color:var(--cyan); display:block; margin-bottom:8px;}
+  .step h4{font-family:'Inter'; font-size:15.5px; margin-bottom:6px; font-weight:600; text-transform:none;}
+  .step p{font-size:13.5px; color:var(--muted);}
+
+  .contact{padding:100px 24px;}
+  .contact-card{
+    max-width:640px; margin:0 auto; background:var(--panel); border:1px solid var(--line);
+    border-radius:10px; padding:44px; text-align:center;
+    box-shadow:0 30px 70px rgba(0,0,0,.5);
+  }
+  .contact-card h2{font-size:26px; margin-bottom:10px;}
+  .contact-card p{color:var(--muted); font-size:14px; margin-bottom:28px;}
+  .contact-links{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .contact-link{
+    font-size:13.5px; background:var(--panel-2); border:1px solid var(--line);
+    padding:12px 18px; border-radius:6px; transition:.2s;
+  }
+  .contact-link:hover{border-color:var(--ember); color:var(--ember);}
+
+  footer{padding:36px 24px; text-align:center; border-top:1px solid var(--line);}
+  footer p{font-size:12.5px; color:var(--muted);}
+
+  .logo3d{
+    display:flex;
+    flex-direction:column;
+    font-family:Rajdhani;
+    font-size:34px;
+    font-weight:700;
+    letter-spacing:4px;
+    color:white;
+    text-shadow:
+      0 2px #ff6a2b,
+      0 4px #cf4c16,
+      0 8px 20px rgba(0,0,0,.7),
+      0 0 40px rgba(255,106,43,.5);
+    transform:perspective(700px) rotateX(20deg);
+  }
+  .logo3d small{
+    font-size:16px;
+    letter-spacing:8px;
+    color:#ff6a2b;
+  }
+
+  .hero{
+    position:relative;
+    height:90vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    text-align:center;
+  }
+  .hero-title{
+    font-size:110px;
+    font-family:Rajdhani;
+    line-height:.9;
+    color:white;
+    text-shadow:
+      0 2px #ff6a2b,
+      0 4px #cf4c16,
+      0 6px #9e3407,
+      0 12px 35px rgba(0,0,0,.8),
+      0 0 80px rgba(255,106,43,.4);
+    transform:
+      perspective(900px)
+      rotateX(18deg);
+    animation:float 4s ease-in-out infinite, pulseGlow 3s ease-in-out infinite;
+  }
+  .hero-title span{
+    display:block;
+    font-size:70px;
+    color:#ff6a2b;
+  }
+  .hero p{
+    margin:35px auto;
+    max-width:600px;
+    font-size:18px;
+    color:#aeb4c1;
+  }
+  .bg-circle{
+    position:absolute;
+    width:700px;
+    height:700px;
+    border-radius:50%;
+    background:radial-gradient(#ff6a2b55,transparent 70%);
+    filter:blur(60px);
+    animation:rotate 20s linear infinite;
+  }
+  .bg-circle2{
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:radial-gradient(#34D2FF33,transparent 70%);
+    filter:blur(60px);
+    animation:rotate2 16s linear infinite;
+  }
+  @keyframes float{
+    50%{
+      transform:
+        perspective(900px)
+        rotateX(18deg)
+        translateY(-10px);
+    }
+  }
+  @keyframes pulseGlow{
+    0%,100%{
+      text-shadow:
+        0 2px #ff6a2b,
+        0 4px #cf4c16,
+        0 6px #9e3407,
+        0 12px 35px rgba(0,0,0,.8),
+        0 0 80px rgba(255,106,43,.4);
+    }
+    50%{
+      text-shadow:
+        0 2px #ff6a2b,
+        0 4px #cf4c16,
+        0 6px #9e3407,
+        0 12px 45px rgba(0,0,0,.85),
+        0 0 130px rgba(255,106,43,.65);
+    }
+  }
+  @keyframes rotate{
+    100%{
+      transform:rotate(360deg);
+    }
+  }
+  @keyframes rotate2{
+    100%{
+      transform:rotate(-360deg);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo3d">
+            <span>CODEROV</span>
+            <small>STUDIO</small>
+        </div>
+
+        <ul>
+            <li><a href="#lots">Проекты</a></li>
+            <li><a href="#process">Услуги</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+
+        <a href="https://t.me/Coderovich" class="nav-cta">
+            Telegram
+        </a>
+    </nav>
+</header>
+
+<section class="hero">
+
+<div class="bg-circle"></div>
+<div class="bg-circle2"></div>
+
+<div class="hero-content">
+
+<h1 class="hero-title">
+
+CODEROV
+
+<span>STUDIO</span>
+
+</h1>
+
+<p>
+
+Продажа копий Black Russia, модов, систем и разработка проектов под ключ.
+
+</p>
+
+<a href="#lots" class="btn-primary">
+
+Смотреть проекты
+
+</a>
+
+</div>
+
+</section>
+
+<section class="selector" id="lots">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Каталог</span>
+      <h2>Выбери лот</h2>
+      <p>Нажми на вкладку — карусель ниже покажет скриншоты и цену этого проекта.</p>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="carousel-shell">
+      <button class="nav-arrow prev" id="prevBtn" aria-label="Предыдущее фото">‹</button>
+      <div class="carousel-stage">
+        <div class="carousel-track" id="track"></div>
+      </div>
+      <button class="nav-arrow next" id="nextBtn" aria-label="Следующее фото">›</button>
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <div class="lot-info">
+      <span class="lot-num" id="lotNum">Лот № 001</span>
+      <h3 id="lotTitle">—</h3>
+      <p class="desc" id="lotDesc">—</p>
+      <div class="price-row">
+        <span class="price" id="lotPrice">★ 0</span>
+        <span class="status">Доступен</span>
+      </div>
+      <a class="btn-primary" href="https://t.me/Coderovich" target="_blank" rel="noopener">Заказать в ЛС →</a>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Как это работает</span>
+      <h2 style="text-transform:none; font-family:'Inter'; font-size:22px;">От выбора до запуска — 4 шага</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="num">01</span><h4>Выбираешь лот</h4><p>Смотришь каталог и находишь то, что нужно именно тебе.</p></div>
+      <div class="step"><span class="num">02</span><h4>Пишешь в ЛС</h4><p>Указываешь номер лота — отвечаю с деталями в течение суток.</p></div>
+      <div class="step"><span class="num">03</span><h4>Оплата звёздами</h4><p>Оплата через Telegram Stars, без переписки о реквизитах.</p></div>
+      <div class="step"><span class="num">04</span><h4>Забираешь результат</h4><p>Передаю файлы и доступы или сразу начинаем обучение.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-card">
+    <span class="eyebrow">Связаться</span>
+    <h2>Остались вопросы?</h2>
+    <p>Напиши в личные сообщения — укажи номер лота, чтобы получить ответ быстрее.</p>
+    <div class="contact-links">
+      <a class="contact-link" href="https://t.me/Coderovich" target="_blank" rel="noopener">✍️ ЛС — @Coderovich</a>
+      <a class="contact-link" href="https://t.me/otzivpat" target="_blank" rel="noopener">⭐ Отзывы — @otzivpat</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Black Russia — моды и услуги. Оплата в Telegram Stars.</p>
+</footer>
+
+<script>
+  const lots = [
+    { num:'Лот № 001', title:'Копия Black Russia', price:'★ 250',
+      desc:'Полная копия сервера под ключ: чистая база без лишнего мусора в коде, готовая к запуску и доработке под себя.',
+      images:['bmw1.jpg','bmw2.jpg','warehouse.jpg'] },
+    { num:'Лот № 002', title:'Мод — без обновления', price:'★ 300',
+      desc:'Готовая мод-версия Black Russia. Разовая покупка: файлы твои, дальнейшие обновления и правки — отдельно.',
+      images:['mod-music-banner.jpg','music-menu.jpg','delivery.jpg'] },
+    { num:'Лот № 003', title:'Мод — с обновлением', price:'★ 350',
+      desc:'Та же мод-версия, но с обновлением в комплекте — получаешь актуальную сборку и доработки после покупки.',
+      images:['music-menu.jpg','mod-music-banner.jpg','tuning.jpg'] },
+    { num:'Лот № 004', title:'Урок: добавление системы', price:'★ 50',
+      desc:'Разбираем на практике, как добавить свою систему на сервер — от идеи и логики до рабочего кода.',
+      images:['job.jpg','tuning.jpg','bmw1.jpg'] },
+    { num:'Лот № 005', title:'Обучение созданию проекта', price:'★ 150',
+      desc:'Полное обучение: собираем свой проект Black Russia с нуля, шаг за шагом, до рабочего результата.',
+      images:['warehouse.jpg','delivery.jpg','job.jpg'] },
+    { num:'Лот № 006', title:'Смена цветов в лаунчере', price:'★ 25',
+      desc:'Перекрашу лаунчер под нужную цветовую схему — быстро и аккуратно, без лишних правок кода.',
+      images:['delivery.jpg','warehouse.jpg','bmw2.jpg'] },
+    { num:'Лот № 007', title:'Создание форума', price:'★ 25',
+      desc:'Настрою и подключу форум для твоего проекта — разделы, дизайн под тематику и готовность к запуску.',
+      images:['bmw1.jpg','job.jpg','music-menu.jpg'] },
+    { num:'Лот № 008', title:'Система на заказ', price:'★ 15–100',
+      desc:'Любая система под твой проект — от простой механики до сложной логики. Цена зависит от объёма задачи.',
+      images:['tuning.jpg','bmw2.jpg','mod-music-banner.jpg'] },
+  ];
+
+  const tabsEl = document.getElementById('tabs');
+  const track = document.getElementById('track');
+  const dotsEl = document.getElementById('dots');
+  const lotNum = document.getElementById('lotNum');
+  const lotTitle = document.getElementById('lotTitle');
+  const lotDesc = document.getElementById('lotDesc');
+  const lotPrice = document.getElementById('lotPrice');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const stage = document.querySelector('.carousel-stage');
+
+  let currentLot = 0;
+  let activeSlide = 0;
+  let dragOffset = 0;   // дробное смещение во время перетаскивания
+  let isDragging = false;
+  let startX = 0;
+  let stageWidth = 1;
+
+  function buildCarousel(images){
+    track.innerHTML = '';
+    dotsEl.innerHTML = '';
+    images.forEach((src, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.innerHTML = `
+        <img class="slide-img" src="${src}" alt="Скриншот проекта ${i+1}" loading="${i===0?'eager':'lazy'}" decoding="async">
+        <div class="reflection"><img src="${src}" alt="" loading="lazy" decoding="async"></div>
+      `;
+      slide.addEventListener('click', () => { if(!isDragging){ activeSlide = i; snapTo(); } });
+      track.appendChild(slide);
+
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.addEventListener('click', () => { activeSlide = i; snapTo(); });
+      dotsEl.appendChild(dot);
+    });
+    activeSlide = 0;
+    dragOffset = 0;
+    updateCarousel(true);
+  }
+
+  function updateCarousel(withTransition){
+    const slides = track.querySelectorAll('.slide');
+    const dots = dotsEl.querySelectorAll('.dot');
+    const n = slides.length;
+    slides.forEach((slide, i) => {
+      let offset = i - activeSlide - dragOffset;
+      if (offset > n/2) offset -= n;
+      if (offset < -n/2) offset += n;
+      const abs = Math.abs(offset);
+      const x = offset * 60;
+      const rotate = Math.max(-40, Math.min(40, offset * -34));
+      const scale = Math.max(0.6, 1 - abs * 0.28);
+      const z = -abs * 160;
+      const opacity = abs > 1.6 ? 0 : 1 - Math.max(0, abs - 1) * 0.8;
+      slide.style.transition = withTransition ? 'transform .55s cubic-bezier(.2,.7,.3,1), opacity .4s, filter .4s' : 'none';
+      slide.style.transform = `translate(-50%,-50%) translateX(${x}%) translateZ(${z}px) rotateY(${rotate}deg) scale(${scale})`;
+      slide.style.opacity = opacity;
+      slide.style.zIndex = 10 - Math.round(abs);
+      slide.style.filter = abs < 0.15 ? 'brightness(1)' : `brightness(${Math.max(.4, 1 - abs*0.35)})`;
+      slide.style.boxShadow = abs < 0.15
+        ? '0 30px 70px rgba(0,0,0,.65), 0 0 60px -8px var(--ember)'
+        : '0 20px 40px rgba(0,0,0,.5)';
+    });
+    dots.forEach((d,i) => d.classList.toggle('active', i === (((activeSlide%n)+n)%n)));
+  }
+
+  function snapTo(){
+    dragOffset = 0;
+    updateCarousel(true);
+  }
+
+  function renderLot(i){
+    currentLot = i;
+    const l = lots[i];
+    lotNum.textContent = l.num;
+    lotTitle.textContent = l.title;
+    lotDesc.textContent = l.desc;
+    lotPrice.textContent = l.price;
+    buildCarousel(l.images);
+    [...tabsEl.children].forEach((t,idx)=> t.classList.toggle('active', idx===i));
+  }
+
+  lots.forEach((l,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'tab';
+    btn.textContent = l.title;
+    btn.addEventListener('click', ()=> renderLot(i));
+    tabsEl.appendChild(btn);
+  });
+
+  prevBtn.addEventListener('click', () => {
+    const n = lots[currentLot].images.length;
+    activeSlide = ((activeSlide - 1) % n + n) % n;
+    snapTo();
+  });
+  nextBtn.addEventListener('click', () => {
+    const n = lots[currentLot].images.length;
+    activeSlide = (activeSlide + 1) % n;
+    snapTo();
+  });
+
+  // Перетаскивание мышью и пальцем — карусель следует за курсором в реальном времени
+  stage.style.touchAction = 'pan-y';
+  stage.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    startX = e.clientX;
+    stageWidth = stage.getBoundingClientRect().width || 1;
+    stage.setPointerCapture(e.pointerId);
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    dragOffset = -(dx / stageWidth) * 2.2;
+    updateCarousel(false);
+  });
+  function endDrag(){
+    if (!isDragging) return;
+    isDragging = false;
+    const n = lots[currentLot].images.length;
+    const shift = Math.round(dragOffset);
+    activeSlide = (((activeSlide + shift) % n) + n) % n;
+    snapTo();
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('pointerleave', () => { if (isDragging) endDrag(); });
+
+  // Клавиатура
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'ArrowRight') nextBtn.click();
+  });
+
+  renderLot(0);
+</script>
+
+</body>
+</html>
